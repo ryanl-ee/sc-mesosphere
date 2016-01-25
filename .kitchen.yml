@@ -1,0 +1,26 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+# verifier:
+#   name: inspec
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: master
+    run_list:
+      - recipe[sc-mesosphere::zookeeper]
+      - recipe[sc-mesosphere::master]
+    attributes:
+    driver_config:
+      network:
+      - ["forwarded_port", {guest: 8080, host: 8080}]
+      - ["forwarded_port", {guest: 8081, host: 8081}]
+      - ["forwarded_port", {guest: 5050, host: 5050}]
